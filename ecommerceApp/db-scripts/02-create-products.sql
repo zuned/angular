@@ -1,0 +1,96 @@
+
+-- -----------------------------------------------------
+-- Table product_category
+-- -----------------------------------------------------
+
+DECLARE
+	v_tab_exists number := 0;
+BEGIN
+	SELECT COUNT(1) INTO v_tab_exists
+	FROM USER_TABLES  WHERE TABLE_NAME='PRODUCT_CATEGORY';
+	IF v_tab_exists = 0 THEN
+        EXECUTE IMMEDIATE 'CREATE TABLE product_category (
+			ID              NUMBER(20, 0) NOT NULL,
+			category_name   VARCHAR(255) NULL,
+			PRIMARY KEY ( ID )
+		)';
+		EXECUTE IMMEDIATE 'COMMENT ON COLUMN PRODUCT_CATEGORY.ID IS ''Primary key''';
+   END IF;
+END;
+/
+
+
+-- -----------------------------------------------------
+-- Table product
+-- -----------------------------------------------------
+
+DECLARE
+	v_tab_exists number := 0;
+BEGIN
+	SELECT COUNT(1) INTO v_tab_exists
+	FROM USER_TABLES  WHERE TABLE_NAME='PRODUCT';
+	IF v_tab_exists = 0 THEN
+        EXECUTE IMMEDIATE 'CREATE TABLE product (
+			id               NUMBER(20) NOT NULL,
+			sku              VARCHAR2(255) DEFAULT NULL,
+			name             VARCHAR2(255) DEFAULT NULL,
+			description      VARCHAR2(255) DEFAULT NULL,
+			unit_price       NUMBER(13, 2) DEFAULT NULL,
+			image_url        VARCHAR2(255) DEFAULT NULL,
+			active           NUMBER(1) DEFAULT 1,
+			units_in_stock   NUMBER(11) DEFAULT NULL,
+			date_created     TIMESTAMP(6) DEFAULT NULL,
+			last_updated     TIMESTAMP(6) DEFAULT NULL,
+			category_id      NUMBER(20) NOT NULL,
+			PRIMARY KEY ( id ),
+			FOREIGN KEY ( category_id )  REFERENCES product_category ( id )
+		)';
+		EXECUTE IMMEDIATE 'COMMENT ON COLUMN PRODUCT.ID IS ''Primary key''';
+   END IF;
+END;
+/
+
+DECLARE
+	v_seq_exists number := 0;
+BEGIN
+	SELECT COUNT(*) INTO v_seq_exists
+		FROM USER_SEQUENCES  WHERE SEQUENCE_NAME='HIBERNATE_SEQUENCE';
+	IF v_seq_exists = 0 THEN 
+		EXECUTE IMMEDIATE 'CREATE SEQUENCE HIBERNATE_SEQUENCE INCREMENT BY 1 START WITH 1 CACHE 100 NOORDER';
+	END IF;
+END;
+/
+
+DECLARE
+	v_seq_exists number := 0;
+BEGIN
+	SELECT COUNT(*) INTO v_seq_exists
+		FROM USER_SEQUENCES  WHERE SEQUENCE_NAME='PRODUCT_CATEGORY_SEQ';
+	IF v_seq_exists = 0 THEN 
+		EXECUTE IMMEDIATE 'CREATE SEQUENCE PRODUCT_CATEGORY_SEQ INCREMENT BY 1 START WITH 1 CACHE 100 NOORDER';
+	END IF;
+END;
+/
+
+DECLARE
+	v_seq_exists number := 0;
+BEGIN
+	SELECT COUNT(*) INTO v_seq_exists
+		FROM USER_SEQUENCES  WHERE SEQUENCE_NAME='PRODUCT_SEQ';
+	IF v_seq_exists = 0 THEN 
+		EXECUTE IMMEDIATE 'CREATE SEQUENCE PRODUCT_SEQ INCREMENT BY 1 START WITH 1 CACHE 100 NOORDER';
+	END IF;
+END;
+/
+-- INDEX FOR APPEAL
+DECLARE
+    LN_CNT NUMBER := 0;
+BEGIN
+SELECT COUNT(1) INTO LN_CNT FROM (
+	SELECT INDEX_NAME,TABLE_NAME,LISTAGG(COLUMN_NAME, ',') WITHIN GROUP (ORDER BY TABLE_NAME,COLUMN_POSITION) AS COLUMN_NAMES FROM USER_IND_COLUMNS WHERE TABLE_NAME='PRODUCT_CATEGORY' GROUP BY INDEX_NAME,TABLE_NAME) WHERE COLUMN_NAMES LIKE ('CATEGORY_NAME%');
+	IF LN_CNT = 0 THEN
+		EXECUTE IMMEDIATE 'CREATE INDEX IDX_PRODUCT_CATEGORY_NAME ON PRODUCT_CATEGORY (CATEGORY_NAME)';
+	END IF;
+END;
+/
+
