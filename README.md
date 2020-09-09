@@ -22,3 +22,4 @@ more reference document will be located at https://angular.io/docs
 - Support responsive we design and modern framework 
 
 - Component | view template | directive | service  | Module
+![How does component works](https://github.com/zuned/angular/blob/master/HowDoesAppRootWorks.jpg)
