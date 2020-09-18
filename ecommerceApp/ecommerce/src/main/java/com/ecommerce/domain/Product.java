@@ -35,6 +35,6 @@ public class Product {
     private Date dateCreated;
     @Temporal(TemporalType.TIMESTAMP)
     @UpdateTimestamp
-    private Date lastupdated;
+    private Date lastUpdated;
 
 }
