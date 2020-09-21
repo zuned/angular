@@ -23,3 +23,7 @@ more reference document will be located at https://angular.io/docs
 
 - Component | view template | directive | service  | Module
 ![How does component works](https://github.com/zuned/angular/blob/master/HowDoesAppRootWorks.jpg)
+
+
+- How to install BootStrap : -> `npm install bootstrap`
+- how to install fontawesome : -> 'npm install @fortawesome/fontawesome`
