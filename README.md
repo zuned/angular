@@ -29,3 +29,6 @@ more reference document will be located at https://angular.io/docs
 - how to install fontawesome : -> 'npm install @fortawesome/fontawesome`
 
 - To include local css/font , we update angular.json file
+
+- ng add @angular/localize
+- npm install @ng-bootstrap/ng-bootstrap
