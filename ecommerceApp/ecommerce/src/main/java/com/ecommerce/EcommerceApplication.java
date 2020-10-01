@@ -6,7 +6,7 @@ package com.ecommerce;
 @SpringBootApplication
 public class EcommerceApplication {
 
-	public static void main(String[] args) {
+		public static void main(String[] args) {
 		SpringApplication.run(EcommerceApplication.class, args);
 	}
 
